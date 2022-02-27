@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: test-mongo
+  data:
+    mongodb:
+      database: test
+      host: 127.0.0.1
+      port: 27017
