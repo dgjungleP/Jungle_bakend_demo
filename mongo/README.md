@@ -15,10 +15,7 @@
 
 > - 他有很高的性能以及队列过期的特性
 > - 必须显示创建，并指定大小
-> - 创建指令
-    ``` shell db.creatCollectioin("mycoll",{caped:true,size:100000})
-    ```
-> 
+> - 创建指令`db.creatCollectioin("mycoll",{caped:true,size:100000}`
 
 ## How to use MongoDB
 
