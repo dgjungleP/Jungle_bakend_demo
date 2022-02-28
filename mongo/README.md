@@ -1,4 +1,4 @@
-# MongoDB with Spring
+# [MongoDB](https://docs.mongodb.com/manual/) with [Spring](https://spring.io)
 
 ## The concept in Mongo
 
@@ -16,3 +16,4 @@
 ## Tips
 
 - Mongo 中不支持表连接
+- 数据存储格式位BSON格式
