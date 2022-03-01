@@ -68,6 +68,8 @@
 
 - drop `db.{collectionName}.drop()`
 
+
+
 ## 常用的数据类型
 
 |数据类型|描述|
