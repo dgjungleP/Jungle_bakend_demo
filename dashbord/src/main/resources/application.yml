@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: test-dashbord
+  data:
+    mongodb:
+      database: dashobord
+      host: 127.0.0.1
+      port: 27017
