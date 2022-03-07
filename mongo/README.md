@@ -68,6 +68,12 @@
 
 - drop `db.{collectionName}.drop()`
 
+### 二、Other CURD
+- find `db.{colletionName}.find(<query document>, <projection document>)`
+> - \<fied\>:1 包含该字段
+> - \<fied\>:0 不包含该字段
+
+- aggregate `db.{colletionName}.aggregate()`
 ## 常用的数据类型
 
 |数据类型|描述|
@@ -88,6 +94,8 @@
 |Code |代码类型。用于在文档中存储 JavaScript 代码。|
 |Regular expression | 正则表达式类型。用于存储正则表达式。|
 
+## 链接
+- [查询符号](https://docs.mongodb.com/manual/reference/operator/query/#std-label-query-projection-operators-top)
 ## Tips
 
 - Mongo 中不支持表连接
