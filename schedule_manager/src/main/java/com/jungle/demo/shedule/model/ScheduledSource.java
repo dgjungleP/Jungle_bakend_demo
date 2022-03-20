@@ -1,8 +1,13 @@
 package com.jungle.demo.shedule.model;
 
+import com.jungle.demo.shedule.enums.ScheduledType;
 import lombok.Data;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.util.StringUtils;
+
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.List;
 
 @Data
 public class ScheduledSource {
@@ -39,7 +44,14 @@ public class ScheduledSource {
      */
     private String initialDelayString;
 
-    public ScheduledSource(Scheduled annotation) {
+    private transient Method method;
+
+    private transient Object bean;
+
+    private ScheduledType type;
+
+
+    public ScheduledSource(Scheduled annotation, Method method, Object bean) {
         this.cron = StringUtils.hasText(annotation.cron()) ? null : annotation.cron();
         this.fixedDelay = annotation.fixedDelay() < 0 ? null : annotation.fixedDelay();
         this.fixedDelayString = StringUtils.hasText(annotation.fixedDelayString()) ? null : annotation.fixedDelayString();
@@ -47,9 +59,34 @@ public class ScheduledSource {
         this.fixedRateString = StringUtils.hasText(annotation.fixedRateString()) ? null : annotation.fixedRateString();
         this.initialDelay = annotation.initialDelay() < 0 ? null : annotation.initialDelay();
         this.initialDelayString = StringUtils.hasText(annotation.initialDelayString()) ? null : annotation.initialDelayString();
+        this.method = method;
+        this.bean = bean;
+        this.type = confirmType();
     }
 
+    private ScheduledType confirmType() {
+        if (cron != null) {
+            return ScheduledType.CRON;
+        } else if (fixedDelay != null || fixedDelayString != null) {
+            return ScheduledType.FIXED_DELAY;
+        } else if (fixedRate != null || fixedRateString != null) {
+            return ScheduledType.FIXED_RATE;
+        }
+        return null;
+    }
+
+    //TODO: 为什么这样检查是对的
     public boolean check() {
-        return true;
+        String sb = "1"
+                + (cron == null ? 0 : 1)
+                + (fixedDelay == null ? 0 : 1)
+                + (fixedDelayString == null ? 0 : 1)
+                + (fixedRate == null ? 0 : 1)
+                + (fixedRateString == null ? 0 : 1)
+                + (initialDelay == null ? 0 : 1)
+                + (initialDelayString == null ? 0 : 1);
+        Integer flag = Integer.valueOf(sb, 2);
+        List<Integer> probability = Arrays.asList(132, 133, 134, 136, 137, 138, 144, 145, 146, 160, 161, 162, 192);
+        return probability.contains(flag);
     }
 }

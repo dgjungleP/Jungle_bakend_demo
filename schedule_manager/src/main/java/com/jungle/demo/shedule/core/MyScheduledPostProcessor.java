@@ -44,7 +44,7 @@ public class MyScheduledPostProcessor implements BeanPostProcessor, ApplicationC
                     continue;
                 }
                 //5. 创建定时任务元数据，并保存到配置管理器中
-                ScheduledSource scheduledSource = new ScheduledSource(scheduledAnnotation);
+                ScheduledSource scheduledSource = new ScheduledSource(scheduledAnnotation, method, bean);
 
                 //TODO: 检查元数据
                 if (!scheduledSource.check()) {
