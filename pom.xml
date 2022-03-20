@@ -17,6 +17,7 @@
         <module>jmh</module>
         <module>mongo</module>
         <module>dashbord</module>
+        <module>schedule_manager</module>
     </modules>
 
     <dependencies>
