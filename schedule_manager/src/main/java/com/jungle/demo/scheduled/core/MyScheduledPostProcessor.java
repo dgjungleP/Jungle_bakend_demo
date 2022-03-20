@@ -1,7 +1,6 @@
-package com.jungle.demo.shedule.core;
+package com.jungle.demo.scheduled.core;
 
-import com.jungle.demo.shedule.common.util.AnnotationUtils;
-import com.jungle.demo.shedule.model.ScheduledSource;
+import com.jungle.demo.scheduled.model.ScheduledSource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -13,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 
-import static com.jungle.demo.shedule.common.util.AnnotationUtils.*;
+import static com.jungle.demo.scheduled.common.util.AnnotationUtils.*;
 
 @Slf4j
 @DependsOn("scheduledConfig")
@@ -67,7 +66,7 @@ public class MyScheduledPostProcessor implements BeanPostProcessor, ApplicationC
         return bean;
     }
 
-    private void cleanOriginalScheduled(Scheduled annotation) {
+    private void cleanOriginalScheduled(Scheduled annotation) throws Exception {
         changeAnnotationValue(annotation, "corn", Scheduled.CRON_DISABLED);
         changeAnnotationValue(annotation, "fixedDelay", -1L);
         changeAnnotationValue(annotation, "fixedDelayString", "");

@@ -1,4 +1,4 @@
-package com.jungle.demo.shedule.enums;
+package com.jungle.demo.scheduled.enums;
 
 public enum ScheduledType {
     CRON(1, "cron"),

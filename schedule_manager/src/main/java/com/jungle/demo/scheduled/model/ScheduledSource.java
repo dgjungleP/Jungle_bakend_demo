@@ -1,6 +1,6 @@
-package com.jungle.demo.shedule.model;
+package com.jungle.demo.scheduled.model;
 
-import com.jungle.demo.shedule.enums.ScheduledType;
+import com.jungle.demo.scheduled.enums.ScheduledType;
 import lombok.Data;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.util.StringUtils;

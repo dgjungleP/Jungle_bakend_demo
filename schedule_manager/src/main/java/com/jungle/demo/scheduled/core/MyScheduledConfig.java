@@ -1,8 +1,7 @@
-package com.jungle.demo.shedule.core;
+package com.jungle.demo.scheduled.core;
 
-import com.jungle.demo.shedule.model.ScheduledSource;
+import com.jungle.demo.scheduled.model.ScheduledSource;
 import lombok.Data;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Component;
 
