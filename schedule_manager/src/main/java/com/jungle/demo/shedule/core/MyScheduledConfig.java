@@ -1,5 +1,8 @@
 package com.jungle.demo.shedule.core;
 
+import com.jungle.demo.shedule.model.ScheduledSource;
+import lombok.Data;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Component;
 
@@ -8,6 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
 
 @Component("scheduledConfig")
+@Data
 public class MyScheduledConfig {
 
     /**
@@ -32,4 +36,7 @@ public class MyScheduledConfig {
      */
     private Map<String, ScheduledSource> nameToScheduleSource = new ConcurrentHashMap<>();
 
+    public void addScheduleSource(String name, ScheduledSource scheduledSource) {
+
+    }
 }
