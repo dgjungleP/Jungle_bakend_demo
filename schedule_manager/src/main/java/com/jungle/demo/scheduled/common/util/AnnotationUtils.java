@@ -10,6 +10,7 @@ public class AnnotationUtils {
         InvocationHandler handler = Proxy.getInvocationHandler(annotation);
         Field field;
         try {
+            //注解的成员变量，并不会直接存储在class对象身上，而是在一个容器里面
             field = handler.getClass().getDeclaredField("memberValues");
         } catch (Exception e) {
             e.printStackTrace();
