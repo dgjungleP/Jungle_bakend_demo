@@ -9,3 +9,8 @@ graph TB
  C-->|无法获取到Scheduled注解| F(创建定时任务的元数据 并且保存到配置管理器中)
  F-->G(将原本的SpringBoot的定时任务取消)
 ```
+
+## 所用到的组件
+- ApplicationContextAware 获取SpringBoot的上下文
+- BeanPostProcessor 标记后置处理器，在每个Bean实例化之后进行后置处理
+- @DependsOn 强制依赖 MyScheduledConfig
