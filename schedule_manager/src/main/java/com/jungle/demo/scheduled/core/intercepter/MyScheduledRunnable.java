@@ -19,7 +19,6 @@ public class MyScheduledRunnable {
     public Object invoke() {
         Object result;
         if (chain.incIndex() == chain.getPoints().size()) {
-
             try {
                 //将调用链重置到初始状态
                 chain.resetIndex();
