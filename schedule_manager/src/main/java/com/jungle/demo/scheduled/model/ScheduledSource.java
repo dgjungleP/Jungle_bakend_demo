@@ -3,6 +3,7 @@ package com.jungle.demo.scheduled.model;
 import com.jungle.demo.scheduled.enums.ScheduledType;
 import lombok.Data;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Method;
@@ -52,13 +53,13 @@ public class ScheduledSource {
 
 
     public ScheduledSource(Scheduled annotation, Method method, Object bean) {
-        this.cron = StringUtils.hasText(annotation.cron()) ? null : annotation.cron();
+        this.cron = ObjectUtils.isEmpty(annotation.cron()) ? null : annotation.cron();
         this.fixedDelay = annotation.fixedDelay() < 0 ? null : annotation.fixedDelay();
-        this.fixedDelayString = StringUtils.hasText(annotation.fixedDelayString()) ? null : annotation.fixedDelayString();
+        this.fixedDelayString = ObjectUtils.isEmpty(annotation.fixedDelayString()) ? null : annotation.fixedDelayString();
         this.fixedRate = annotation.fixedRate() < 0 ? null : annotation.fixedRate();
-        this.fixedRateString = StringUtils.hasText(annotation.fixedRateString()) ? null : annotation.fixedRateString();
+        this.fixedRateString = ObjectUtils.isEmpty(annotation.fixedRateString()) ? null : annotation.fixedRateString();
         this.initialDelay = annotation.initialDelay() < 0 ? null : annotation.initialDelay();
-        this.initialDelayString = StringUtils.hasText(annotation.initialDelayString()) ? null : annotation.initialDelayString();
+        this.initialDelayString = ObjectUtils.isEmpty(annotation.initialDelayString()) ? null : annotation.initialDelayString();
         this.method = method;
         this.bean = bean;
         this.type = confirmType();
