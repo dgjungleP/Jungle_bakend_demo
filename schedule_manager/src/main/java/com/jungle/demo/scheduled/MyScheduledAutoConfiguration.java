@@ -33,7 +33,7 @@ public class MyScheduledAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public SimpleStrengthen colonyStrengthen() {
+    public SimpleStrengthen simpleStrengthen() {
         return new SimpleStrengthen();
     }
 }

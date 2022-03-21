@@ -42,6 +42,6 @@ public class ScheduledFutureFactory {
                 throw new RuntimeException("Sorry not support this type:" + type);
         }
         scheduledStrategyCache.put(type, strategy);
-        return null;
+        return strategy;
     }
 }
