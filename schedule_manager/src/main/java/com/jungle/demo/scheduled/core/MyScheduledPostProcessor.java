@@ -67,7 +67,7 @@ public class MyScheduledPostProcessor implements BeanPostProcessor, ApplicationC
     }
 
     private void cleanOriginalScheduled(Scheduled annotation) throws Exception {
-        changeAnnotationValue(annotation, "corn", Scheduled.CRON_DISABLED);
+        changeAnnotationValue(annotation, "cron", Scheduled.CRON_DISABLED);
         changeAnnotationValue(annotation, "fixedDelay", -1L);
         changeAnnotationValue(annotation, "fixedDelayString", "");
         changeAnnotationValue(annotation, "fixedRate", -1L);

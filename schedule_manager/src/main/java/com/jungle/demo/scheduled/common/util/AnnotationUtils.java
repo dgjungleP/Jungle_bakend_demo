@@ -4,6 +4,8 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
+import java.util.Map;
+import java.util.Objects;
 
 public class AnnotationUtils {
     public static void changeAnnotationValue(Annotation annotation, String key, Object newValue) throws Exception {
@@ -17,5 +19,12 @@ public class AnnotationUtils {
             throw new IllegalStateException(e);
         }
 
+        field.setAccessible(true);
+        Map<String, Object> values = (Map<String, Object>) field.get(handler);
+        Object oldValue = values.get(key);
+        if (oldValue == null || !Objects.equals(oldValue.getClass(), newValue.getClass())) {
+            throw new IllegalArgumentException();
+        }
+        values.put(key, newValue);
     }
 }

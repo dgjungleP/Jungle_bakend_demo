@@ -15,7 +15,7 @@ class AnnotationUtilsTest {
     @Scheduled(cron = "0/5 * * * * ? ")
     public void setAnnotationValue() throws Exception {
         Scheduled annotationValue = this.getClass().getMethod("setAnnotationValue").getAnnotation(Scheduled.class);
-        AnnotationUtils.changeAnnotationValue(annotationValue, "corn", Scheduled.CRON_DISABLED);
+        AnnotationUtils.changeAnnotationValue(annotationValue, "cron", Scheduled.CRON_DISABLED);
 
     }
 }
