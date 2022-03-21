@@ -4,11 +4,13 @@ import com.jungle.demo.scheduled.common.util.AnnotationUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootApplication
+@ComponentScan("com.jungle.demo.scheduled")
 class AnnotationUtilsTest {
 
     @Test
