@@ -36,7 +36,7 @@ public class MyScheduledConfig {
     private Map<String, ScheduledSource> nameToScheduleSource = new ConcurrentHashMap<>();
 
     public void addScheduleSource(String name, ScheduledSource scheduledSource) {
-        nameToScheduleSource.putIfAbsent(name, scheduledSource);
+        nameToScheduleSource.put(name, scheduledSource);
     }
 
     public void addRunnable(String scheduleName, Runnable invoke) {

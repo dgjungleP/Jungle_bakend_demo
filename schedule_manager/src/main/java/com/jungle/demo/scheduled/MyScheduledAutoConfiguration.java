@@ -1,8 +1,10 @@
 package com.jungle.demo.scheduled;
 
+import com.jungle.demo.scheduled.core.intercepter.strengthen.SimpleStrengthen;
 import com.jungle.demo.scheduled.properties.ThreadPoolTaskSchedulerProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -27,5 +29,11 @@ public class MyScheduledAutoConfiguration {
         taskScheduler.setAwaitTerminationSeconds(threadPoolTaskSchedulerProperties.getAwaitTerminationSeconds());
         taskScheduler.initialize();
         return taskScheduler;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public SimpleStrengthen colonyStrengthen() {
+        return new SimpleStrengthen();
     }
 }
