@@ -12,4 +12,12 @@ public class Chain {
     public Chain(List<Point> points) {
         this.points = points;
     }
+
+    public int incIndex() {
+        return ++index;
+    }
+
+    public void resetIndex() {
+        this.index = -1;
+    }
 }

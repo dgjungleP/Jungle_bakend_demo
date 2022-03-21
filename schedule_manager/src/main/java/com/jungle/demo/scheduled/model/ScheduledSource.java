@@ -89,4 +89,16 @@ public class ScheduledSource {
         List<Integer> probability = Arrays.asList(132, 133, 134, 136, 137, 138, 144, 145, 146, 160, 161, 162, 192);
         return probability.contains(flag);
     }
+
+    public void clear() {
+        this.cron = null;
+        this.fixedDelay = null;
+        this.fixedDelayString = null;
+        this.fixedRate = null;
+        this.fixedRateString = null;
+    }
+
+    public void refreshType() {
+        this.type = confirmType();
+    }
 }

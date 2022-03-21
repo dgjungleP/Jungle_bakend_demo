@@ -39,3 +39,4 @@ H-->I(启动定时任务 将线程回调钩子存到任务配置管理器中)
 - ApplicationContextAware 获取SpringBoot上下文
 - ApplicationRunner 在Bean初始化之后执行自定义逻辑
 - @DependsOn 强制依赖 threadPoolTaskScheduler
+- MethodInterceptor 方法拦截器用于增强方法
