@@ -22,7 +22,7 @@ public class MyScheduledConfig {
      * 定时任务名称域定时任务的回调函数的关系容器
      * TODO: 什么是定时任务的回调
      */
-    private Map<String, ScheduledFuture> nameToScheduleFuture = new ConcurrentHashMap<>();
+    private Map<String, ScheduledFuture<?>> nameToScheduleFuture = new ConcurrentHashMap<>();
 
     /**
      * 定时任务的名称和定时任务需要执行的逻辑的关系容器
@@ -37,5 +37,13 @@ public class MyScheduledConfig {
 
     public void addScheduleSource(String name, ScheduledSource scheduledSource) {
         nameToScheduleSource.putIfAbsent(name, scheduledSource);
+    }
+
+    public void addRunnable(String scheduleName, Runnable invoke) {
+        nameToRunnable.put(scheduleName, invoke);
+    }
+
+    public void addScheduleFuture(String scheduleName, ScheduledFuture<?> scheduledFuture) {
+        nameToScheduleFuture.put(scheduleName, scheduledFuture);
     }
 }
