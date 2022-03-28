@@ -18,6 +18,7 @@
         <module>mongo</module>
         <module>dashbord</module>
         <module>schedule_manager</module>
+        <module>juc</module>
     </modules>
 
     <dependencies>
