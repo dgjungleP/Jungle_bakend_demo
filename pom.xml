@@ -19,6 +19,7 @@
         <module>dashbord</module>
         <module>schedule_manager</module>
         <module>juc</module>
+        <module>my_analysis</module>
     </modules>
 
     <dependencies>
