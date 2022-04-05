@@ -4,8 +4,8 @@ import java.util.List;
 
 public class SimpleAnalysis extends AbstractAnalysis {
     @Override
-    protected List<String> handleMissWord(List<String> missWords) {
-        return missWords;
+    protected List<String> handleMissWord() {
+        return MISS_WORDS;
     }
 
     @Override

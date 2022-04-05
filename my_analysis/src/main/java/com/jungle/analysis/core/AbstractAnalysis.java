@@ -5,17 +5,17 @@ import com.jungle.analysis.handle.AmbiguityHandle;
 import com.jungle.analysis.handle.SimpleAmbiguityHandle;
 import com.jungle.analysis.util.AnalysisUtil;
 
-import javax.print.DocFlavor;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public abstract class AbstractAnalysis implements MyAnalysis {
 
+    protected final List<String> MISS_WORDS = new ArrayList<>();
 
-    private final List<String> MISS_WORDS = new ArrayList<>();
-
-    private static final List<AmbiguityHandle> AMBIGUITY_HANDLES = new ArrayList<>();
+    protected static final List<AmbiguityHandle> AMBIGUITY_HANDLES = new ArrayList<>();
+    protected final List<MyAnalysis> SUB_ANALYSIS = new ArrayList<>();
 
     static {
         AMBIGUITY_HANDLES.add(new SimpleAmbiguityHandle());
@@ -38,7 +38,9 @@ public abstract class AbstractAnalysis implements MyAnalysis {
 
     @Override
     public List<String> analysis(String in) {
-        return Collections.singletonList(in);
+        return SUB_ANALYSIS.stream()
+                .flatMap(data -> data.cut(in).stream())
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -58,12 +60,15 @@ public abstract class AbstractAnalysis implements MyAnalysis {
     public final List<String> export(List<String> words) {
         List<String> result = new ArrayList<>();
         words = handleClassifier(words);
-        List<String> missWord = handleMissWord(MISS_WORDS);
+        List<String> missWord = handleMissWord();
         result.addAll(words);
         result.addAll(missWord);
         return result;
     }
 
+    protected void registerSubAnalysis(MyAnalysis analysis) {
+        SUB_ANALYSIS.add(analysis);
+    }
 
     @Override
     public final List<String> cut(String in) {
@@ -74,7 +79,7 @@ public abstract class AbstractAnalysis implements MyAnalysis {
         return export(handleAmbiguity);
     }
 
-    protected abstract List<String> handleMissWord(List<String> miss_words);
+    protected abstract List<String> handleMissWord();
 
     protected abstract List<String> handleClassifier(List<String> words);
 
