@@ -2,10 +2,12 @@ package com.jungle.analysis.core;
 
 
 import com.jungle.analysis.handle.AmbiguityHandle;
+import com.jungle.analysis.handle.SimpleAmbiguityHandle;
 import com.jungle.analysis.util.AnalysisUtil;
 
+import javax.print.DocFlavor;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
 
 public abstract class AbstractAnalysis implements MyAnalysis {
@@ -14,6 +16,10 @@ public abstract class AbstractAnalysis implements MyAnalysis {
     private final List<String> MISS_WORDS = new ArrayList<>();
 
     private static final List<AmbiguityHandle> AMBIGUITY_HANDLES = new ArrayList<>();
+
+    static {
+        AMBIGUITY_HANDLES.add(new SimpleAmbiguityHandle());
+    }
 
     @Override
     public final String pretreatment(String in) {
@@ -32,7 +38,7 @@ public abstract class AbstractAnalysis implements MyAnalysis {
 
     @Override
     public List<String> analysis(String in) {
-        return null;
+        return Collections.singletonList(in);
     }
 
     @Override
@@ -49,10 +55,15 @@ public abstract class AbstractAnalysis implements MyAnalysis {
     }
 
     @Override
-    public final List<String> export(List<String> handleAmbiguity) {
-
-        return null;
+    public final List<String> export(List<String> words) {
+        List<String> result = new ArrayList<>();
+        words = handleClassifier(words);
+        List<String> missWord = handleMissWord(MISS_WORDS);
+        result.addAll(words);
+        result.addAll(missWord);
+        return result;
     }
+
 
     @Override
     public final List<String> cut(String in) {
@@ -63,20 +74,23 @@ public abstract class AbstractAnalysis implements MyAnalysis {
         return export(handleAmbiguity);
     }
 
+    protected abstract List<String> handleMissWord(List<String> miss_words);
 
-    public abstract void handlePrepareWords(String in);
+    protected abstract List<String> handleClassifier(List<String> words);
 
-    public abstract void loadClassifier(String uri);
+    protected abstract void handlePrepareWords(String in);
 
-    public abstract void loadStop(String uri);
+    protected abstract void loadClassifier(String uri);
 
-    public abstract void loadMain(String uri);
+    protected abstract void loadStop(String uri);
 
-    public abstract String getMainDictionaryUri();
+    protected abstract void loadMain(String uri);
 
-    public abstract void setMainDictionaryUri(String mainDictionaryUri);
+    protected abstract String getMainDictionaryUri();
 
-    public abstract String getStopDictionaryUri();
+    protected abstract void setMainDictionaryUri(String mainDictionaryUri);
+
+    protected abstract String getStopDictionaryUri();
 
     public abstract void setStopDictionaryUri(String stopDictionaryUri);
 
