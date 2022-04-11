@@ -6,7 +6,6 @@ import com.jungle.analysis.handle.SimpleAmbiguityHandle;
 import com.jungle.analysis.util.AnalysisUtil;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,10 +37,15 @@ public abstract class AbstractAnalysis implements MyAnalysis {
 
     @Override
     public List<String> analysis(String in) {
-        return SUB_ANALYSIS.stream()
+        List<String> result = handleAnalysis(in);
+        List<String> subResult = SUB_ANALYSIS.stream()
                 .flatMap(data -> data.cut(in).stream())
                 .collect(Collectors.toList());
+        result.addAll(subResult);
+        return result;
     }
+
+    protected abstract List<String> handleAnalysis(String in);
 
     @Override
     public List<String> handleAmbiguity(List<String> words) {
