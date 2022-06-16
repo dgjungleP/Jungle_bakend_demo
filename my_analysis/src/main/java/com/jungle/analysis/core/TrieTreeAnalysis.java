@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TrieTreeAnalysis extends AbstractAnalysis {
-    private final SimpleTrieTreeNode TREE_ROOT = new SimpleTrieTreeNode();
+    private static final SimpleTrieTreeNode TREE_ROOT = new SimpleTrieTreeNode();
 
     @Override
     protected List<String> handleAnalysis(String in) {
