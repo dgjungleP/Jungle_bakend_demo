@@ -1,14 +1,18 @@
 package com.codereader.util.file;
 
+
+import org.apache.commons.lang.StringUtils;
+
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.Reader;
 import java.util.*;
 
-public class FileReader {
+public class FileReaderUtil {
     public static final String JAVA_TAIL = ".java";
 
-    public static final List<String> JAVA_FILE_PATH = new ArrayList<>();
-
-    private FileReader() {
+    private FileReaderUtil() {
     }
 
     public static Map<FileType, List<String>> getFileRoot(String filePath) {
@@ -50,6 +54,28 @@ public class FileReader {
         return FileType.OTHER;
     }
 
+    public static long readJavaFile(String filePath) {
+        long fileSize = 0;
+        if (filePath == null || !filePath.endsWith(JAVA_TAIL)) {
+            return fileSize;
+        }
+        File file = new File(filePath);
+        if (!file.isFile()) {
+            return fileSize;
+        }
+        try (Reader fileReader = new FileReader(file);
+             BufferedReader buffer = new BufferedReader(fileReader);) {
+            fileSize = buffer.lines()
+                    .filter(StringUtils::isNotBlank)
+                    .filter(data -> !data.startsWith("package"))
+                    .filter(data -> !data.startsWith("import"))
+                    .count();
+            System.out.println("File: " + file.getName() + " fileLine=" + fileSize);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return fileSize;
+    }
 
     enum FileType {
         JAVA, DICTIONARY, OTHER
