@@ -51,7 +51,6 @@ public class ClazzInfo {
         info.buildClazzInfo(clazzInfo);
         info.buildPreFix(preFix);
         info.setType(type);
-        System.out.println("PreFix:\t" + preFix + "\tClazzInfo:\t" + clazzInfo);
         return info;
     }
 

@@ -1,31 +1,40 @@
 package com.codereader.util.file;
 
 
+import com.codereader.clazz.ClazzFileInfo;
 import org.junit.jupiter.api.Test;
+import org.junit.platform.commons.util.StringUtils;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class FileReaderUtilTest {
 
 
     @Test
     public void testFileReader() {
-        Map<FileReaderUtil.FileType, List<String>> fileRoot = FileReaderUtil.getFileRoot("C:\\Users\\jd53\\Documents\\GitHub\\startMybatis\\mybatis-3\\src" + "\\main");
+        Map<FileReaderUtil.FileType, List<FilePath>> fileRoot = FileReaderUtil.getFileRoot("C:\\Users\\jd53\\Documents\\GitHub\\startMybatis\\mybatis-3\\src" + "\\main");
 
-        long sum = fileRoot.values()
+        List<ClazzFileInfo> clazzFileInfoList = fileRoot.values()
                 .parallelStream()
                 .flatMap(Collection::stream)
-                .mapToLong(FileReaderUtil::readJavaFile)
+                .map(FileReaderUtil::readJavaFile)
+                .filter(data -> StringUtils.isNotBlank(data.getFileName()))
+                .collect(Collectors.toList());
+        long sumFileLine = clazzFileInfoList.stream()
+                .mapToLong(ClazzFileInfo::getFileSize)
                 .sum();
-        System.out.println("Total count: " + sum);
+        for (ClazzFileInfo info : clazzFileInfoList) {
+            System.out.println("info = " + info);
+        }
+        System.out.println("Total count: " + sumFileLine);
     }
 
     @Test
     public void testReadJavaFile() {
         String path = "C:\\Users\\jd53\\Documents\\GitHub\\Jungle_bakend_demo\\schedule_manager\\src\\main\\java\\com\\jungle\\demo\\scheduled\\MyScheduledAutoConfiguration.java";
-
-        FileReaderUtil.readJavaFile(path);
+        FileReaderUtil.readJavaFile(FilePath.of(path, "C:\\Users\\jd53\\Documents\\GitHub\\Jungle_bakend_demo\\schedule_manager\\src\\main"));
     }
 }

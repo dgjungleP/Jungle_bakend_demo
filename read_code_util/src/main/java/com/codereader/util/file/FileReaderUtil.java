@@ -1,6 +1,7 @@
 package com.codereader.util.file;
 
 
+import com.codereader.clazz.ClazzFileInfo;
 import com.codereader.clazz.ClazzInfo;
 import org.apache.commons.lang.StringUtils;
 
@@ -21,9 +22,10 @@ public class FileReaderUtil {
     private FileReaderUtil() {
     }
 
-    public static Map<FileType, List<String>> getFileRoot(String filePath) {
-        Map<FileType, List<String>> fileRootPath = new HashMap<>();
+    public static Map<FileType, List<FilePath>> getFileRoot(String filePath) {
+        Map<FileType, List<FilePath>> fileRootPath = new HashMap<>();
         File file = new File(filePath);
+        System.out.println(file.getPath());
         Queue<File> fileDictionary = new ArrayDeque<>();
         fileDictionary.add(file);
         while (!fileDictionary.isEmpty()) {
@@ -33,7 +35,7 @@ public class FileReaderUtil {
                 Arrays.stream(listFiles).forEachOrdered(nextFile -> {
                     FileType type = checkFileType(nextFile);
                     fileRootPath.computeIfAbsent(type, (key) -> new ArrayList<>())
-                            .add(nextFile.getPath());
+                            .add(FilePath.of(nextFile.getPath(), filePath));
                     if (type.equals(FileType.DICTIONARY)) {
                         fileDictionary.add(nextFile);
                     }
@@ -60,32 +62,54 @@ public class FileReaderUtil {
         return FileType.OTHER;
     }
 
-    public static long readJavaFile(String filePath) {
+    public static ClazzFileInfo readJavaFile(FilePath filePath) {
+        String absolutePath = filePath.getAbsolutePath();
+        ClazzFileInfo info = new ClazzFileInfo();
         long fileSize = 0;
-        if (filePath == null || !filePath.endsWith(JAVA_TAIL)) {
-            return fileSize;
+        if (absolutePath == null || !absolutePath.endsWith(JAVA_TAIL)) {
+            return info;
         }
-        File file = new File(filePath);
+        File file = new File(absolutePath);
         if (!file.isFile()) {
-            return fileSize;
+            return info;
         }
         try (Reader fileReader = new FileReader(file);
              BufferedReader buffer = new BufferedReader(fileReader);) {
             Stream<String> lineStream = buffer.lines();
             List<String> lines = lineStream.collect(Collectors.toList());
             List<String> importLines = getAllImport(lines);
+            String packageLine = getPackage(lines);
             lines = cleanJavaFile(lines);
             fileSize = lines.size();
-//            System.out.println("File: " + file.getName() + " fileLine=" + fileSize);
-            readJavaClazz(lines);
+            List<ClazzInfo> allClazz = readJavaClazz(lines);
+            info.setAllClazz(allClazz);
+            info.setAllImportList(importLines);
+            info.setBasePackage(packageLine);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return fileSize;
+        info.setFileSize(fileSize);
+        info.setFileName(file.getName());
+        return info;
     }
 
+    private static String getPackage(List<String> lines) {
+        return lines.stream()
+                .filter(StringUtils::isNotBlank)
+                .filter(data -> data.startsWith("package"))
+                .map(FileReaderUtil::readPackageLine)
+                .collect(Collectors.joining(""));
 
-    private static void readJavaClazz(List<String> lines) {
+    }
+
+    private static String readPackageLine(String line) {
+        return line.replace("package", "")
+                .replace(";", "")
+                .trim();
+    }
+
+    private static List<ClazzInfo> readJavaClazz(List<String> lines) {
+        List<ClazzInfo> result = new ArrayList<>();
         StringBuilder clazzLineBuilder = new StringBuilder();
         long classCount = 0;
         boolean startClazzLine = false;
@@ -107,17 +131,17 @@ public class FileReaderUtil {
                     clazzLine = clazzLine.substring(0, clazzLine.length() - 1);
                     clazzLineBuilder = new StringBuilder();
                     classCount++;
-                    readClazzLine(clazzLine, classCount > 1 ? ClazzInfo.ClassType.INNER_CLASS : type);
+                    ClazzInfo clazzInfo = readClazzLine(clazzLine, classCount > 1 ? ClazzInfo.ClassType.INNER_CLASS : type);
+                    result.add(clazzInfo);
                 }
             }
         }
+        return result;
     }
 
-    private static void readClazzLine(String clazzLine, ClazzInfo.ClassType type) {
-        ClazzInfo clazzInfo = ClazzInfo.getClazzInfo(clazzLine,type);
-
+    private static ClazzInfo readClazzLine(String clazzLine, ClazzInfo.ClassType type) {
+        return ClazzInfo.getClazzInfo(clazzLine, type);
     }
-
 
     private static List<String> cleanJavaFile(List<String> lines) {
         return lines.stream()
@@ -134,7 +158,15 @@ public class FileReaderUtil {
     private static List<String> getAllImport(List<String> lines) {
         return lines.stream()
                 .filter(StringUtils::isNotBlank)
-                .filter(data -> data.startsWith("import")).collect(Collectors.toList());
+                .filter(data -> data.startsWith("import"))
+                .map(FileReaderUtil::readImportLine)
+                .collect(Collectors.toList());
+    }
+
+    private static String readImportLine(String importLine) {
+        return importLine.replace("import", "")
+                .replace(";", "")
+                .trim();
     }
 
     enum FileType {
