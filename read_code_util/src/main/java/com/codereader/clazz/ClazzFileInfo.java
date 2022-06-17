@@ -18,6 +18,7 @@ public class ClazzFileInfo {
     private List<ClazzInfo> allClazz;
     private Long fileSize;
     private String fileName;
+    @Setter(AccessLevel.NONE)
     private List<String> allImportList;
     @Setter(AccessLevel.NONE)
     private String basePackage;
@@ -38,6 +39,14 @@ public class ClazzFileInfo {
             allClazz.forEach(data -> data.setBasePackage(this.basePackage));
         }
         this.allClazz = allClazz;
+    }
+
+    public void setAllImportList(List<String> allImportList) {
+
+        this.allImportList = allImportList;
+        if (this.allClazz != null) {
+            allClazz.forEach(data -> data.findCurrentClazz(this.allImportList));
+        }
     }
 
     public void setBasePackage(String basePackage) {

@@ -6,6 +6,7 @@ import org.apache.commons.lang.StringUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.codereader.clazz.ClazzConstants.*;
@@ -19,6 +20,17 @@ public class ClazzInfo {
     private List<String> interfaces = new ArrayList<>();
     private ClassType type;
     private String basePackage;
+
+    public void findCurrentClazz(List<String> allImportList) {
+        Map<String, String> importKeyMap = allImportList.stream().collect(Collectors.groupingBy(data -> {
+            String[] split = data.split("\\.");
+            return split[split.length - 1];
+        }, Collectors.joining("")));
+        this.parentClazz = importKeyMap.get(this.parentClazz);
+        this.interfaces = this.interfaces.stream()
+                .map(importKeyMap::get)
+                .collect(Collectors.toList());
+    }
 
     public enum ClassType {
         ABSTRACT(ABSTRACT_TEG), INTERFACE(INTERFACE_TEG), SIMPLE(CLAZZ_TAG), INNER_CLASS(CLAZZ_TAG), ERROR("");

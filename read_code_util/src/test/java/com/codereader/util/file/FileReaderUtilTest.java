@@ -2,6 +2,7 @@ package com.codereader.util.file;
 
 
 import com.codereader.clazz.ClazzFileInfo;
+import com.codereader.clazz.ClazzInfo;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.commons.util.StringUtils;
 
@@ -26,8 +27,15 @@ public class FileReaderUtilTest {
         long sumFileLine = clazzFileInfoList.stream()
                 .mapToLong(ClazzFileInfo::getFileSize)
                 .sum();
-        for (ClazzFileInfo info : clazzFileInfoList) {
-            System.out.println("info = " + info);
+
+        List<ClazzInfo> clazzInfoList = clazzFileInfoList.stream()
+                .map(ClazzFileInfo::getAllClazz)
+                .filter(data -> !data.isEmpty())
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
+        for (ClazzInfo info : clazzInfoList) {
+            System.out.println(info);
+
         }
         System.out.println("Total count: " + sumFileLine);
     }
