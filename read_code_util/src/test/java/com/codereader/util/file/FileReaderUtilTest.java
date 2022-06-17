@@ -38,13 +38,10 @@ public class FileReaderUtilTest {
                 .filter(data -> !data.isEmpty())
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
-        for (ClazzInfo info : clazzInfoList) {
-            System.out.println(info);
-        }
-        System.out.println(clazzInfoList.stream().filter(data -> !data.getInterfaces().isEmpty() && StringUtils.isNotBlank(data.getParentClazz())).collect(Collectors.toList()));
+
         ClazzTreeNode treeNode = ClazzTreeNode.buildTree(clazzInfoList);
 //        System.out.println("Total count: " + sumFileLine);`
-        System.out.println(JSON.toJSONString(treeNode));
+        System.out.println(JSON.toJSONString(treeNode, SerializerFeature.DisableCircularReferenceDetect));
     }
 
     @Test
