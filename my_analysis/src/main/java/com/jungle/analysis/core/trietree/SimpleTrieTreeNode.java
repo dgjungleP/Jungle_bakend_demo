@@ -1,8 +1,6 @@
 package com.jungle.analysis.core.trietree;
 
 import cn.hutool.core.collection.CollectionUtil;
-import com.jungle.analysis.core.SimpleAnalysis;
-import com.sun.tools.javac.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
