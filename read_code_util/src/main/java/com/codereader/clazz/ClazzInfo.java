@@ -41,6 +41,14 @@ public class ClazzInfo {
         }
     }
 
+    public String getAbsoluteClazzName() {
+
+        if (ClassType.INNER_CLASS.equals(type)) {
+            return this.basePackage + "." + this.currentClazz + "." + this.clazzName;
+        } else {
+            return this.basePackage + "." + this.clazzName;
+        }
+    }
 
     public static ClazzInfo error() {
         ClazzInfo info = new ClazzInfo();

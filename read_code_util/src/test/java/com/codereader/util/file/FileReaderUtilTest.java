@@ -3,6 +3,7 @@ package com.codereader.util.file;
 
 import com.codereader.clazz.ClazzFileInfo;
 import com.codereader.clazz.ClazzInfo;
+import com.codereader.clazz.ClazzTreeNode;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.commons.util.StringUtils;
 
@@ -35,9 +36,10 @@ public class FileReaderUtilTest {
                 .collect(Collectors.toList());
         for (ClazzInfo info : clazzInfoList) {
             System.out.println(info);
-
         }
+        ClazzTreeNode treeNode = ClazzTreeNode.buildTree(clazzInfoList);
         System.out.println("Total count: " + sumFileLine);
+        System.out.println(treeNode);
     }
 
     @Test
