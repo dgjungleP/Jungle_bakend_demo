@@ -1,7 +1,7 @@
 package com.codereader.clazz;
 
-public class ClassConstants {
-    private ClassConstants() {
+public class ClazzConstants {
+    private ClazzConstants() {
     }
 
     public static final String EXTEND_TEG = "extends";

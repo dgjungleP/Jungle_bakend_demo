@@ -13,7 +13,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.codereader.clazz.ClassConstants.*;
+import static com.codereader.clazz.ClazzConstants.*;
 
 public class FileReaderUtil {
     public static final String JAVA_TAIL = ".java";

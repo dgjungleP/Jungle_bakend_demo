@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.codereader.clazz.ClassConstants.*;
+import static com.codereader.clazz.ClazzConstants.*;
 
 @Data
 public class ClazzInfo {
