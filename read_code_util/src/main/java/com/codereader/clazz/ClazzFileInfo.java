@@ -38,7 +38,9 @@ public class ClazzFileInfo {
 
     public void setAllClazz(List<ClazzInfo> allClazz) {
         if (allClazz != null) {
-            allClazz.forEach(data -> data.setBasePackage(this.basePackage));
+            allClazz.stream()
+                    .filter(data -> !ClazzInfo.ClassType.IMPORT_CLAZZ.equals(data.getType()))
+                    .forEach(data -> data.setBasePackage(this.basePackage));
         }
         this.allClazz = allClazz;
     }
@@ -49,6 +51,7 @@ public class ClazzFileInfo {
         if (this.allClazz != null) {
             allClazz.forEach(data -> data.findCurrentClazz(this.allImportList));
             List<ClazzInfo> importClazz = allImportList.stream().map(ClazzInfo::buildFromImport)
+                    .distinct()
                     .collect(Collectors.toList());
             this.allClazz = new ArrayList<>(CollectionUtil.unionDistinct(this.allClazz, importClazz));
         }
@@ -58,7 +61,9 @@ public class ClazzFileInfo {
     public void setBasePackage(String basePackage) {
         this.basePackage = basePackage;
         if (this.allClazz != null) {
-            allClazz.forEach(data -> data.setBasePackage(this.basePackage));
+            allClazz.stream()
+                    .filter(data -> !ClazzInfo.ClassType.IMPORT_CLAZZ.equals(data.getType()))
+                    .forEach(data -> data.setBasePackage(this.basePackage));
         }
     }
 }

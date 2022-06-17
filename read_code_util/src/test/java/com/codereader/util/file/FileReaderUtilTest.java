@@ -19,7 +19,9 @@ public class FileReaderUtilTest {
 
     @Test
     public void testFileReader() {
-        Map<FileReaderUtil.FileType, List<FilePath>> fileRoot = FileReaderUtil.getFileRoot("C:\\Users\\jd53\\Documents\\GitHub\\startMybatis\\mybatis-3\\src" + "\\main");
+        String path = "C:\\Users\\jd53\\Documents\\GitHub\\startMybatis\\mybatis-3\\src" + "\\main";
+        path = "C:\\Users\\jd53\\Documents\\GitHub\\startMybatis\\mybatis-3\\src\\main\\java\\org\\apache\\ibatis\\executor\\loader";
+        Map<FileReaderUtil.FileType, List<FilePath>> fileRoot = FileReaderUtil.getFileRoot(path);
 
         List<ClazzFileInfo> clazzFileInfoList = fileRoot.values()
                 .parallelStream()
@@ -37,10 +39,11 @@ public class FileReaderUtilTest {
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
         for (ClazzInfo info : clazzInfoList) {
-//            System.out.println(info);
+            System.out.println(info);
         }
+        System.out.println(clazzInfoList.stream().filter(data -> !data.getInterfaces().isEmpty() && StringUtils.isNotBlank(data.getParentClazz())).collect(Collectors.toList()));
         ClazzTreeNode treeNode = ClazzTreeNode.buildTree(clazzInfoList);
-//        System.out.println("Total count: " + sumFileLine);
+//        System.out.println("Total count: " + sumFileLine);`
         System.out.println(JSON.toJSONString(treeNode));
     }
 

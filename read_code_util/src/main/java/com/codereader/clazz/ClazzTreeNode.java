@@ -2,12 +2,8 @@ package com.codereader.clazz;
 
 import cn.hutool.core.collection.CollectionUtil;
 import lombok.Data;
-import org.apache.commons.lang.ObjectUtils;
-import org.apache.commons.lang.StringUtils;
 
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,7 +18,10 @@ public class ClazzTreeNode {
 
     //TODO both extends and implements
     public static ClazzTreeNode buildTree(List<ClazzInfo> clazzInfoList) {
-        ClazzTreeNode node = new ClazzTreeNode().buildNode(clazzInfoList, null);
+        List<CheckedClazzInfoHolder> clazzInfoHolders = clazzInfoList.stream()
+                .map(CheckedClazzInfoHolder::new)
+                .collect(Collectors.toList());
+        ClazzTreeNode node = new ClazzTreeNode().buildNode(clazzInfoHolders, null);
         node.children = node.children.stream().filter(data -> {
             ClazzInfo current = data.current;
             return !data.children.isEmpty() || !ClazzInfo.ClassType.IMPORT_CLAZZ.equals(current.getType());
@@ -30,32 +29,43 @@ public class ClazzTreeNode {
         return node;
     }
 
-    private ClazzTreeNode buildNode(List<ClazzInfo> clazzInfoList, ClazzInfo data) {
+    private ClazzTreeNode buildNode(List<CheckedClazzInfoHolder> clazzInfoList, ClazzInfo data) {
         ClazzTreeNode node = new ClazzTreeNode();
         node.current = data;
         node.children = node.buildTree(clazzInfoList, node.current);
         return node;
     }
 
-    private List<ClazzTreeNode> buildTree(List<ClazzInfo> clazzInfoList, ClazzInfo current) {
-        List<ClazzInfo> currentClazz;
-        if (clazzInfoList == null || clazzInfoList.isEmpty()) {
+    private List<ClazzTreeNode> buildTree(List<CheckedClazzInfoHolder> clazzInfoList, ClazzInfo current) {
+        List<CheckedClazzInfoHolder> currentClazz;
+        if (checkValidateClassInfo(clazzInfoList)) {
             return new ArrayList<>();
         }
 
         if (current == null) {
             currentClazz = clazzInfoList.stream()
-                    .filter(data -> data.getInterfaces().isEmpty())
-                    .filter(data -> StringUtils.isEmpty(data.getParentClazz()))
+                    .filter(CheckedClazzInfoHolder::isParentClass)
                     .collect(Collectors.toList());
         } else {
             currentClazz = clazzInfoList.stream()
-                    .filter(data -> data.getInterfaces().contains(current.getAbsoluteClazzName()) || StringUtils.equals(data.getParentClazz(), current.getAbsoluteClazzName()))
+                    .filter(data -> !data.isParentClass())
+                    .filter(data -> data.haveThisParent(current))
                     .collect(Collectors.toList());
         }
         return currentClazz.stream()
-                .map(data -> this.buildNode(CollectionUtil.subtractToList(clazzInfoList, currentClazz), data))
+                .map(data -> this.buildNode(clazzInfoList, data.getBaseClassInfo()))
                 .collect(Collectors.toList());
+    }
+
+    private boolean checkValidateClassInfo(List<CheckedClazzInfoHolder> clazzInfoList) {
+        if (clazzInfoList == null || clazzInfoList.isEmpty()) {
+            return true;
+        }
+        long count = clazzInfoList.stream()
+                .filter(data -> !data.checkDone())
+                .filter(data -> !ClazzInfo.ClassType.IMPORT_CLAZZ.equals(data.getBaseClassInfo().getType()))
+                .count();
+        return count == 0;
     }
 
 

@@ -1,6 +1,7 @@
 package com.codereader.clazz;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.stream.Collectors;
 import static com.codereader.clazz.ClazzConstants.*;
 
 @Data
+@EqualsAndHashCode
 public class ClazzInfo {
 
     private String clazzName;
@@ -32,10 +34,23 @@ public class ClazzInfo {
                 .collect(Collectors.toList());
     }
 
+    public boolean isParentClass() {
+        return this.getInterfaces().isEmpty() &&
+                StringUtils.isEmpty(this.getParentClazz());
+    }
+
+    public boolean haveThisParent(ClazzInfo current) {
+        if (current == null) {
+            return false;
+        }
+        return this.getInterfaces().contains(current.getAbsoluteClazzName()) ||
+                StringUtils.equals(this.getParentClazz(), current.getAbsoluteClazzName());
+    }
+
     public static ClazzInfo buildFromImport(String importLine) {
         ClazzInfo info = new ClazzInfo();
         int nameSpot = importLine.lastIndexOf(".");
-        info.clazzName = importLine.substring(nameSpot);
+        info.clazzName = importLine.substring(nameSpot + 1);
         info.basePackage = importLine.substring(0, nameSpot);
         info.type = ClassType.IMPORT_CLAZZ;
         return info;
