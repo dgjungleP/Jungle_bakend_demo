@@ -14,9 +14,11 @@ import static com.codereader.clazz.ClazzConstants.*;
 public class ClazzInfo {
 
     private String clazzName;
-    private String parrentClazz;
+    private String parentClazz;
+    private String currentClazz;
     private List<String> interfaces = new ArrayList<>();
     private ClassType type;
+    private String basePackage;
 
     public enum ClassType {
         ABSTRACT(ABSTRACT_TEG), INTERFACE(INTERFACE_TEG), SIMPLE(CLAZZ_TAG), INNER_CLASS(CLAZZ_TAG), ERROR("");
@@ -80,7 +82,7 @@ public class ClazzInfo {
                 continue;
             }
             if (extendTag) {
-                this.parrentClazz = infoSplit[count];
+                this.parentClazz = infoSplit[count];
             }
             if (implementsTag) {
                 this.interfaces.add(infoSplit[count]);
@@ -91,4 +93,5 @@ public class ClazzInfo {
                 .flatMap(data -> Arrays.stream(data.split(",")))
                 .collect(Collectors.toList());
     }
+
 }

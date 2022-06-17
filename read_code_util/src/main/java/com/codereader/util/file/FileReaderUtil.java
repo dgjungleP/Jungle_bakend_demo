@@ -25,7 +25,6 @@ public class FileReaderUtil {
     public static Map<FileType, List<FilePath>> getFileRoot(String filePath) {
         Map<FileType, List<FilePath>> fileRootPath = new HashMap<>();
         File file = new File(filePath);
-        System.out.println(file.getPath());
         Queue<File> fileDictionary = new ArrayDeque<>();
         fileDictionary.add(file);
         while (!fileDictionary.isEmpty()) {
@@ -134,6 +133,11 @@ public class FileReaderUtil {
                     ClazzInfo clazzInfo = readClazzLine(clazzLine, classCount > 1 ? ClazzInfo.ClassType.INNER_CLASS : type);
                     result.add(clazzInfo);
                 }
+            }
+        }
+        for (ClazzInfo info : result) {
+            if (info.getType().equals(ClazzInfo.ClassType.INNER_CLASS)) {
+                info.setCurrentClazz(result.get(0).getClazzName());
             }
         }
         return result;
