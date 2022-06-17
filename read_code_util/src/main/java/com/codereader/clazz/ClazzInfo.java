@@ -32,8 +32,17 @@ public class ClazzInfo {
                 .collect(Collectors.toList());
     }
 
+    public static ClazzInfo buildFromImport(String importLine) {
+        ClazzInfo info = new ClazzInfo();
+        int nameSpot = importLine.lastIndexOf(".");
+        info.clazzName = importLine.substring(nameSpot);
+        info.basePackage = importLine.substring(0, nameSpot);
+        info.type = ClassType.IMPORT_CLAZZ;
+        return info;
+    }
+
     public enum ClassType {
-        ABSTRACT(ABSTRACT_TEG), INTERFACE(INTERFACE_TEG), SIMPLE(CLAZZ_TAG), INNER_CLASS(CLAZZ_TAG), ERROR("");
+        ABSTRACT(ABSTRACT_TEG), INTERFACE(INTERFACE_TEG), SIMPLE(CLAZZ_TAG), INNER_CLASS(CLAZZ_TAG), IMPORT_CLAZZ(""), ERROR("");
         public final String splitTag;
 
         ClassType(String splitTag) {

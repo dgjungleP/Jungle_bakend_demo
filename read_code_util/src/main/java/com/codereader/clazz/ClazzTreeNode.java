@@ -20,8 +20,14 @@ public class ClazzTreeNode {
 
     private ClazzInfo current;
 
+    //TODO both extends and implements
     public static ClazzTreeNode buildTree(List<ClazzInfo> clazzInfoList) {
-        return new ClazzTreeNode().buildNode(clazzInfoList, null);
+        ClazzTreeNode node = new ClazzTreeNode().buildNode(clazzInfoList, null);
+        node.children = node.children.stream().filter(data -> {
+            ClazzInfo current = data.current;
+            return !data.children.isEmpty() || !ClazzInfo.ClassType.IMPORT_CLAZZ.equals(current.getType());
+        }).collect(Collectors.toList());
+        return node;
     }
 
     private ClazzTreeNode buildNode(List<ClazzInfo> clazzInfoList, ClazzInfo data) {

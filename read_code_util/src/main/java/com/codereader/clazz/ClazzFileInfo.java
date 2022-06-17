@@ -1,5 +1,6 @@
 package com.codereader.clazz;
 
+import cn.hutool.core.collection.CollectionUtil;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 public class ClazzFileInfo {
@@ -46,8 +48,12 @@ public class ClazzFileInfo {
         this.allImportList = allImportList;
         if (this.allClazz != null) {
             allClazz.forEach(data -> data.findCurrentClazz(this.allImportList));
+            List<ClazzInfo> importClazz = allImportList.stream().map(ClazzInfo::buildFromImport)
+                    .collect(Collectors.toList());
+            this.allClazz = new ArrayList<>(CollectionUtil.unionDistinct(this.allClazz, importClazz));
         }
     }
+
 
     public void setBasePackage(String basePackage) {
         this.basePackage = basePackage;

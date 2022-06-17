@@ -1,11 +1,13 @@
 package com.codereader.util.file;
 
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.codereader.clazz.ClazzFileInfo;
 import com.codereader.clazz.ClazzInfo;
 import com.codereader.clazz.ClazzTreeNode;
+import org.apache.commons.lang.StringUtils;
 import org.junit.jupiter.api.Test;
-import org.junit.platform.commons.util.StringUtils;
 
 import java.util.Collection;
 import java.util.List;
@@ -35,11 +37,11 @@ public class FileReaderUtilTest {
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
         for (ClazzInfo info : clazzInfoList) {
-            System.out.println(info);
+//            System.out.println(info);
         }
         ClazzTreeNode treeNode = ClazzTreeNode.buildTree(clazzInfoList);
-        System.out.println("Total count: " + sumFileLine);
-        System.out.println(treeNode);
+//        System.out.println("Total count: " + sumFileLine);
+        System.out.println(JSON.toJSONString(treeNode));
     }
 
     @Test
