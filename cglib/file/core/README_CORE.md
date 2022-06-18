@@ -24,6 +24,9 @@ net.sf.cglib.core
 - [ ] ClassInfo
 - [ ] MethodInfo
 - [ ] Signature
+- [ ] CustomizerRegistry
+- [ ] LoadingCache
+- [ ] Function
 ##   
 - [ ] ClassesKey
 - [ ] KeyFactory
