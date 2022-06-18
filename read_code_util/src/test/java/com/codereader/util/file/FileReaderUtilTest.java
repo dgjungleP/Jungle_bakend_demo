@@ -6,6 +6,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.codereader.clazz.ClazzFileInfo;
 import com.codereader.clazz.ClazzInfo;
 import com.codereader.clazz.ClazzTreeNode;
+import com.google.common.collect.Multimap;
 import org.apache.commons.lang.StringUtils;
 import org.junit.jupiter.api.Test;
 
@@ -19,10 +20,9 @@ public class FileReaderUtilTest {
 
     @Test
     public void testFileReader() {
-        String path = "C:\\Users\\jd53\\Documents\\GitHub\\startMybatis\\mybatis-3\\src" + "\\main";
-        path = "C:\\Users\\jd53\\Documents\\GitHub\\startMybatis\\mybatis-3\\src\\main\\java\\org\\apache\\ibatis\\executor\\loader";
+        String path = "C:\\Users\\jd53\\Documents\\GitHub\\cglib\\cglib\\src\\main";
+//        path = "C:\\Users\\jd53\\Documents\\GitHub\\startMybatis\\mybatis-3\\src\\main\\java\\org\\apache\\ibatis\\executor\\loader";
         Map<FileReaderUtil.FileType, List<FilePath>> fileRoot = FileReaderUtil.getFileRoot(path);
-
         List<ClazzFileInfo> clazzFileInfoList = fileRoot.values()
                 .parallelStream()
                 .flatMap(Collection::stream)
@@ -40,7 +40,7 @@ public class FileReaderUtilTest {
                 .collect(Collectors.toList());
 
         ClazzTreeNode treeNode = ClazzTreeNode.buildTree(clazzInfoList);
-//        System.out.println("Total count: " + sumFileLine);`
+        System.out.println("Total count: " + sumFileLine);
         System.out.println(JSON.toJSONString(treeNode, SerializerFeature.DisableCircularReferenceDetect));
     }
 
