@@ -5,7 +5,6 @@ import net.sf.cglib.beans.BeanMap;
 import net.sf.cglib.beans.ImmutableBean;
 import org.junit.jupiter.api.Test;
 
-import javax.sound.midi.Soundbank;
 import java.lang.reflect.Method;
 
 public class CglibBeanTest {
@@ -57,5 +56,5 @@ public class CglibBeanTest {
 
     }
 
-  
+
 }

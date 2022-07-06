@@ -23,6 +23,7 @@
         <module>webFlux</module>
         <module>read_code_util</module>
         <module>cglib</module>
+        <module>jmx</module>
     </modules>
 
     <dependencies>
