@@ -15,3 +15,5 @@
 ## JRMI
 
 ## Jconsole
+
+## JavaBeans
