@@ -1,7 +1,8 @@
 package com.jungle.jmx.mxbean;
 
-import javax.xml.crypto.Data;
+
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Queue;
 
 public class QueueSampler implements QueueSamplerMXBean {
@@ -11,12 +12,9 @@ public class QueueSampler implements QueueSamplerMXBean {
         this.queue = queue;
     }
 
-    public QueueSampler() {
-    }
-
     @Override
     public QueueSample getQueueSample() {
-        return new QueueSample(LocalDateTime.now(), queue.size(), queue.peek());
+        return new QueueSample(new Date(), queue.size(), queue.peek());
     }
 
     @Override
@@ -25,4 +23,6 @@ public class QueueSampler implements QueueSamplerMXBean {
             queue.clear();
         }
     }
+
+
 }

@@ -3,9 +3,10 @@ package com.jungle.jmx.mxbean;
 import javax.management.openmbean.CompositeData;
 import java.beans.ConstructorProperties;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 public class QueueSample {
-    private final LocalDateTime date;
+    private final Date date;
     private final int size;
     private final String head;
 
@@ -15,13 +16,13 @@ public class QueueSample {
      * @see CompositeData
      */
     @ConstructorProperties({"date", "size", "head"})
-    public QueueSample(LocalDateTime date, int size, String head) {
+    public QueueSample(Date date, int size, String head) {
         this.date = date;
         this.size = size;
         this.head = head;
     }
 
-    public LocalDateTime getDate() {
+    public Date getDate() {
         return date;
     }
 
