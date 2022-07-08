@@ -23,3 +23,15 @@
 ## JavaBeans
 
 ## JFR
+
+## JMS
+
+## JPA 
+
+## Server
+- JBoss(WildFly)
+- WebSphere
+- WebLogic
+- tomcat
+- Jetty
+- undertow
