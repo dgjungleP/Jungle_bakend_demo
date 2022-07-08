@@ -62,7 +62,7 @@ public class Client {
         // Get domains from MBeanServer
         //
         echo("\nDomains:");
-        String domains[] = mbsc.getDomains();
+        String[] domains = mbsc.getDomains();
         Arrays.sort(domains);
         for (String domain : domains) {
             echo("\tDomain = " + domain);
@@ -81,7 +81,7 @@ public class Client {
         //
         echo("\nQuery MBeanServer MBeans:");
         Set<ObjectName> names =
-                new TreeSet<ObjectName>(mbsc.queryNames(null, null));
+                new TreeSet<>(mbsc.queryNames(null, null));
         for (ObjectName name : names) {
             echo("\tObjectName = " + name);
         }
@@ -95,7 +95,7 @@ public class Client {
 
         // Construct the ObjectName for the Hello MBean
         //
-        ObjectName mbeanName = new ObjectName("com.example:type=Hello");
+        ObjectName mbeanName = new ObjectName("com.jungle.jmx.simple:type=Hello");
 
         // Create a dedicated proxy for the MBean instead of
         // going directly through the MBean server connection
@@ -149,7 +149,7 @@ public class Client {
         // Construct the ObjectName for the QueueSampler MXBean
         //
         ObjectName mxbeanName =
-                new ObjectName("com.example:type=QueueSampler");
+                new ObjectName("com.jungle.jmx.mxbean:type=QueueSampler");
 
         // Create a dedicated proxy for the MXBean instead of
         // going directly through the MBean server connection
